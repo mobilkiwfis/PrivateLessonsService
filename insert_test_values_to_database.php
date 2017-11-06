@@ -33,23 +33,29 @@ response_message("CONNECTION", "OK");
 // activation_key = activation_key123
 $time_stamp = microtime(true);
 $query = "INSERT INTO $db_table_users (
-    user_id,
-    name,
-    surname,
-    password,
-    email,
-    photo,
-    activation_key,
-    is_activated
+    `user_id`,
+    `firstname`,
+    `surname`,
+    `password`,
+    `email`,
+    `phone_number`,
+    `photo`,
+    `creation_timestamp`,
+    `is_activated`,
+    `activation_key`,
+    `is_banned`,
     ) VALUES (
     'null',
     'Jon',
     'Creative',
     'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',
     'jcreat@test.org',
+    '+48 516 146 491',
     'avatar_$time_stamp.jpg',
+    '$time_stamp',
+    '1',
     '7caa234220764d94027cd5e16d64230f0b56a0e9fd1edef171dd1e65b0e31699',
-    'FALSE'
+    '0'
 )";
 $statement = $db->prepare($query);
 $statement->execute();
