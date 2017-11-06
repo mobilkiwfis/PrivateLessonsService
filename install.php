@@ -60,7 +60,7 @@ else
     // Create table.
     $query = "CREATE TABLE `$db_table_users` (
         `user_id` int(11) NOT NULL AUTO_INCREMENT,
-        `name` varchar(100) NOT NULL,
+        `firstname` varchar(100) NOT NULL,
         `surname` varchar(100) NOT NULL,
         `password` varchar(128) NOT NULL,
         `email` varchar(100) NOT NULL UNIQUE,
