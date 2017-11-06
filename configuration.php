@@ -20,6 +20,7 @@ $db_table_categories = "categories";
 $db_table_available_days = "available_days";
 $db_table_payments_history = "payments_history";
 $db_table_favourites = "favourites";
+$db_table_teaching_levels = "teaching_levels";
 
 
 

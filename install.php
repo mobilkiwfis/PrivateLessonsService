@@ -64,6 +64,7 @@ else
         `surname` varchar(100) NOT NULL,
         `password` varchar(128) NOT NULL,
         `email` varchar(100) NOT NULL UNIQUE,
+        `phone_number` varchar(30) NOT NULL,
         `photo` varchar(128) NOT NULL,
         `creation_timestamp` TIMESTAMP NOT NULL,
         `is_activated` bool NOT NULL DEFAULT '0',
@@ -248,7 +249,7 @@ else
 
 
 ////////////////////////////////////////////////////////
-// Payments history table validation.
+// Favourites table validation.
 if (check_if_table_exist($db, $db_table_favourites))
 {
     response_message("TABLE $db_table_favourites", "ALREADY EXISTS");
@@ -265,6 +266,40 @@ else
 
     response_message("TABLE $db_table_favourites", "CREATED");
 }
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+// Teaching leveles table validation.
+if (check_if_table_exist($db, $db_table_teaching_levels))
+{
+    response_message("TABLE $db_table_teaching_levels", "ALREADY EXISTS");
+}
+else 
+{
+    // Create table.
+    $query = "CREATE TABLE `$db_table_teaching_levels` (
+        `offer_id` int(11) NOT NULL,
+        `elementary_school` bool NOT NULL DEFAULT '0',
+        `junior_high_school` bool NOT NULL DEFAULT '0',
+        `high_school` bool NOT NULL DEFAULT '0',
+        `vocational_school` bool NOT NULL DEFAULT '0',
+        `college` bool NOT NULL DEFAULT '0',
+        `other` bool NOT NULL DEFAULT '0',
+        
+        PRIMARY KEY (`offer_id`)
+    )";
+    $statement = $db->prepare($query);
+    $statement->execute();
+
+    response_message("TABLE $db_table_teaching_levels", "CREATED");
+}
+
 
 
 
@@ -391,6 +426,24 @@ $statement = $db->prepare($query);
 $statement->execute();
 
 response_message("TABLE $db_table_favourites LINKED TO $db_table_users", "OK");
+
+
+
+
+
+
+
+// Link table.
+$query = "ALTER TABLE 
+    `$db_table_teaching_levels` ADD CONSTRAINT `${db_table_teaching_levels}_fk0` 
+    FOREIGN KEY (`offer_id`) 
+    REFERENCES `$db_table_offers`(`offer_id`)
+";
+$statement = $db->prepare($query);
+$statement->execute();
+
+response_message("TABLE $db_table_teaching_levels LINKED TO $db_table_offers", "OK");
+
 
 
 

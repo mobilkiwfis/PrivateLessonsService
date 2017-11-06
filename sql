@@ -5,6 +5,7 @@ CREATE TABLE `users` (
 	`password` varchar(128) NOT NULL,
 	`email` varchar(100) NOT NULL UNIQUE,
 	`photo` varchar(128) NOT NULL,
+	`phone_number` varchar(30) NOT NULL,
 	`creation_timestamp` TIMESTAMP NOT NULL,
 	`is_activated` bool NOT NULL DEFAULT '0',
 	`activation_key` varchar(128) NOT NULL UNIQUE,
@@ -74,6 +75,17 @@ CREATE TABLE `favourites` (
 	`user_id` int(11) NOT NULL
 );
 
+CREATE TABLE `teaching_levels` (
+	`offer_id` int(11) NOT NULL,
+	`elementary_school` bool NOT NULL DEFAULT '0',
+	`junior_high_school` bool NOT NULL DEFAULT '0',
+	`high_school` bool NOT NULL DEFAULT '0',
+	`vocational_school` bool NOT NULL DEFAULT '0',
+	`college` bool NOT NULL DEFAULT '0',
+	`other` bool NOT NULL DEFAULT '0',
+	PRIMARY KEY (`offer_id`)
+);
+
 ALTER TABLE `offers` ADD CONSTRAINT `offers_fk0` FOREIGN KEY (`owner_id`) REFERENCES `users`(`user_id`);
 
 ALTER TABLE `offers` ADD CONSTRAINT `offers_fk1` FOREIGN KEY (`category_id`) REFERENCES `categories`(`category_id`);
@@ -89,3 +101,5 @@ ALTER TABLE `payments_history` ADD CONSTRAINT `payments_history_fk1` FOREIGN KEY
 ALTER TABLE `favourites` ADD CONSTRAINT `favourites_fk0` FOREIGN KEY (`offer_id`) REFERENCES `offers`(`offer_id`);
 
 ALTER TABLE `favourites` ADD CONSTRAINT `favourites_fk1` FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`);
+
+ALTER TABLE `teaching_levels` ADD CONSTRAINT `teaching_levels_fk0` FOREIGN KEY (`offer_id`) REFERENCES `offers`(`offer_id`);
