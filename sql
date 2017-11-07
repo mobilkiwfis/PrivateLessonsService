@@ -6,7 +6,7 @@ CREATE TABLE `users` (
 	`email` varchar(100) NOT NULL UNIQUE,
 	`photo` varchar(128) NOT NULL,
 	`phone_number` varchar(30) NOT NULL,
-	`creation_timestamp` TIMESTAMP NOT NULL,
+	`creation_timestamp` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`is_activated` bool NOT NULL DEFAULT '0',
 	`activation_key` varchar(128) NOT NULL UNIQUE,
 	`is_banned` bool NOT NULL DEFAULT '0',
@@ -25,8 +25,8 @@ CREATE TABLE `offers` (
 	`at_teachers_house` bool NOT NULL DEFAULT '0',
 	`at_students_house` bool NOT NULL DEFAULT '0',
 	`get_to_student_for_free` bool NOT NULL DEFAULT '0',
-	`creation_timestamp` TIMESTAMP NOT NULL,
-	`last_modification_timestamp` TIMESTAMP NOT NULL,
+	`creation_timestamp` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`last_modification_timestamp` TIMESTAMP,
 	`visibility_expire_timestamp` TIMESTAMP,
 	`promoted_expire_timestamp` TIMESTAMP,
 	PRIMARY KEY (`offer_id`)
@@ -64,9 +64,9 @@ CREATE TABLE `payments_history` (
 	`offer_id` int(11) NOT NULL,
 	`charge` FLOAT NOT NULL,
 	`payment_method` varchar(100) NOT NULL,
-	`payment_date` TIMESTAMP NOT NULL,
-	`start_date` TIMESTAMP NOT NULL,
-	`end_date` TIMESTAMP NOT NULL,
+	`payment_date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`start_date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`end_date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 	PRIMARY KEY (`payment_id`)
 );
 

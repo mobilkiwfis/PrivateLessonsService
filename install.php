@@ -64,9 +64,9 @@ else
         `surname` varchar(100) NOT NULL,
         `password` varchar(128) NOT NULL,
         `email` varchar(100) NOT NULL UNIQUE,
-        `phone_number` varchar(30) NOT NULL,
         `photo` varchar(128) NOT NULL,
-        `creation_timestamp` TIMESTAMP NOT NULL,
+        `phone_number` varchar(30) NOT NULL,
+        `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
         `is_activated` bool NOT NULL DEFAULT '0',
         `activation_key` varchar(128) NOT NULL UNIQUE,
         `is_banned` bool NOT NULL DEFAULT '0',
@@ -105,8 +105,8 @@ else
         `at_teachers_house` bool NOT NULL DEFAULT '0',
         `at_students_house` bool NOT NULL DEFAULT '0',
         `get_to_student_for_free` bool NOT NULL DEFAULT '0',
-        `creation_timestamp` TIMESTAMP NOT NULL,
-        `last_modification_timestamp` TIMESTAMP NOT NULL,
+	    `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+	    `last_modification_timestamp` TIMESTAMP,
         `visibility_expire_timestamp` TIMESTAMP,
         `promoted_expire_timestamp` TIMESTAMP,
         
@@ -141,16 +141,6 @@ else
         `category_key` varchar(100) NOT NULL UNIQUE,
         
         PRIMARY KEY (`category_id`)
-    );
-    
-    INSERT INTO $db_table_categories (
-        `category_id`,
-        `subcategory_of`,
-        `category_key`
-    ) VALUES (
-        '1',
-        NULL,
-        'root'
     )";
     $statement = $db->prepare($query);
     $statement->execute();
@@ -226,9 +216,9 @@ else
         `offer_id` int(11) NOT NULL,
         `charge` FLOAT NOT NULL,
         `payment_method` varchar(100) NOT NULL,
-        `payment_date` TIMESTAMP NOT NULL,
-        `start_date` TIMESTAMP NOT NULL,
-        `end_date` TIMESTAMP NOT NULL,
+        `payment_date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `start_date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `end_date` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 
         PRIMARY KEY (`payment_id`)
     )";

@@ -1,6 +1,9 @@
 <?php
 
-$useLocalHost = true;
+/////////////////////////////////////////////////////////
+// Database values
+
+$use_local_host = true;
 
 $localhost_database_host_address = "localhost";
 $localhost_database_name = "mobilki";
@@ -23,9 +26,7 @@ $db_table_favourites = "favourites";
 $db_table_teaching_levels = "teaching_levels";
 
 
-
-
-if ($useLocalHost == true)
+if ($use_local_host == true)
 {
     $db_host = $localhost_database_host_address;
     $db_name = $localhost_database_name;
@@ -39,6 +40,18 @@ else
     $db_username = $server_database_username;
     $db_password = $server_database_password;
 }
+
+
+
+/////////////////////////////////////////////////////////
+// Const values
+$db_date_format = "Y-m-d H:i:s";
+$one_hour = 60 * 60; // 60s * 60m
+$one_day = $one_hour * 24; // $one_hour * 24h
+$one_week = $one_day * 7; // $one_day * 7d
+$two_weeks = $one_week * 2; // $one_week * 2
+
+
 
 chmod("configuration.php", 0600); 
 ?>
