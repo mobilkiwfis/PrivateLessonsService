@@ -53,5 +53,5 @@ $two_weeks = $one_week * 2; // $one_week * 2
 
 
 
-chmod("configuration.php", 0600); 
+//chmod("configuration.php", 0600); 
 ?>
