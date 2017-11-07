@@ -6,6 +6,15 @@ class Response {
     public $data = array();
 
 
+    public function __construct($status = null, $data = null) {
+        if ($status !== null)
+            $this->status = $status;
+
+        if ($data !== null)
+            $this->data = $data;
+    }
+
+
     public function set_status($status) : bool {
         $this->status = $status;
         return true;
