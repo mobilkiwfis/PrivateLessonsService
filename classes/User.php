@@ -11,12 +11,6 @@ class User {
     {
         
     }
-
-/*
-    public function is_logged() : bool {
-        return $this->_is_logged;
-    }
-*/
 }
 
 ?>

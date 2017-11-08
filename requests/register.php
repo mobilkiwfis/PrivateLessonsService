@@ -10,17 +10,8 @@ session_start();
 $db = new PDO("mysql:host=$db_host;dbname=$db_name", $db_username, $db_password);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 
-//$_SESSION["user"] = new User();
-//session_destroy();
-
 $user = (isset($_SESSION["user"])) ? $_SESSION["user"] : new User();
 $response = new Response();
-
-//$_SESSION["user"]->is_logged = true;
-
-//var_dump($user);
-
-
 
 
 // User already logged in
@@ -34,13 +25,13 @@ if ($user->is_logged === true)
 
 
 // Handle input
-$firstname = (isset($_GET["firstname"])) ? $_GET["firstname"] : null;
+$firstname = (isset($_POST["firstname"])) ? $_POST["firstname"] : null;
 $good_firstname = true;
-$surname = (isset($_GET["surname"])) ? $_GET["surname"] : null;
+$surname = (isset($_POST["surname"])) ? $_POST["surname"] : null;
 $good_surname = true;
-$password = (isset($_GET["password"])) ? $_GET["password"] : null;
+$password = (isset($_POST["password"])) ? $_POST["password"] : null;
 $good_password = true;
-$email = (isset($_GET["email"])) ? $_GET["email"] : null;
+$email = (isset($_POST["email"])) ? $_POST["email"] : null;
 $good_email = true;
 
 
@@ -243,16 +234,7 @@ else
 {
     $response->set_status("NO_OK");
     die(json_encode($response));
-} 
-
-/*
-    if ($good_firstname) {
-        $query = "SELECT `user_id` FROM $db_table_users (";
-        $statement = $db->prepare($query);
-        $statement->execute();
-    }
-*/
-
+}
 
 
 ?>
