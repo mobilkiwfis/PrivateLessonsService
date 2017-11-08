@@ -65,7 +65,7 @@ else
         `password` varchar(128) NOT NULL,
         `email` varchar(100) NOT NULL UNIQUE,
         `photo` varchar(128) NOT NULL,
-        `phone_number` varchar(30) NOT NULL,
+        `phone_number` varchar(30),
         `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
         `is_activated` bool NOT NULL DEFAULT '0',
         `activation_key` varchar(128) NOT NULL UNIQUE,

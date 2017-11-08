@@ -45,6 +45,7 @@ else
 
 /////////////////////////////////////////////////////////
 // Const values
+$db_password_encoding = "sha256";
 $db_date_format = "Y-m-d H:i:s";
 $one_hour = 60 * 60; // 60s * 60m
 $one_day = $one_hour * 24; // $one_hour * 24h

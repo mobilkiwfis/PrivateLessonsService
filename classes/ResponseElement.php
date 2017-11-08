@@ -4,7 +4,8 @@ class ResponseElement {
     public $status_code = "E100";
     public $caused_by = "server";
 
-    public function __construct($status_code = null, $caused_by = null) {
+    public function __construct($status_code = null, $caused_by = null) 
+    {
         if ($status_code !== null)
             $this->status_code = $status_code;
         
