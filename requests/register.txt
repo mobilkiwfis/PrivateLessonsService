@@ -27,7 +27,7 @@ Parameters (+ necesery, ? optional):
 
 
 Returns:
-- status "OK": When register succesfull.
+- status "OK": When registered succesfull.
     data: empty array
 - status "NO_OK": When at least one stage failed.
     data: array with errors
