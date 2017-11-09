@@ -6,6 +6,11 @@ Request type:
 POST
 
 
+Pre-check:
++ session:
+    - E202 - if user is already logged.
+
+
 Parameters (+ necesery, ? optional):
 + firstname : string - User's firstname
     E301 - this = null
