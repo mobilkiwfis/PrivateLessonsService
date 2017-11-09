@@ -1,18 +1,27 @@
 <?php
 
 /////////////////////////////////////////////////////////
+// Debug mode
+
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
+
+/////////////////////////////////////////////////////////
 // Database values
 
-$use_local_host = true;
+$use_local_host = false;
 
+$localhost_database_host_name = "localhost";
 $localhost_database_host_address = "localhost";
 $localhost_database_name = "mobilki";
 $localhost_database_username = "root";
 $localhost_database_password = "";
 
 
-$server_database_host_address = "piotrbartela.pl";
-$server_database_name = "mobilki";
+$server_database_host_name = "mobilki.piotrbartela.pl";
+$server_database_host_address = "localhost";
+$server_database_name = "korepetycje";
 $server_database_username = "mobilki";
 $server_database_password = "qwe123";
 
@@ -28,6 +37,7 @@ $db_table_teaching_levels = "teaching_levels";
 
 if ($use_local_host == true)
 {
+    $db_host_name = $localhost_database_host_name;
     $db_host = $localhost_database_host_address;
     $db_name = $localhost_database_name;
     $db_username = $localhost_database_username;
@@ -35,6 +45,7 @@ if ($use_local_host == true)
 }
 else
 {
+    $db_host_name = $server_database_host_name;
     $db_host = $server_database_host_address;
     $db_name = $server_database_name;
     $db_username = $server_database_username;
