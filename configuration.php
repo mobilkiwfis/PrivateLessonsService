@@ -10,7 +10,7 @@ error_reporting(-1);
 /////////////////////////////////////////////////////////
 // Database values
 
-$use_local_host = false;
+$use_local_host = true;
 
 $localhost_database_host_name = "localhost";
 $localhost_database_host_address = "localhost";

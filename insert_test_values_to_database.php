@@ -29,7 +29,7 @@ response_message("CONNECTION", "OK");
 
 ////////////////////////////////////////////////////////
 // Users table fulfill.
-// password = password123
+$password = hash($db_password_encoding, "password123");
 // activation_key = activation_key123
 $time_stamp = microtime(true);
 $time_stamp_db = date($db_date_format, $time_stamp);
@@ -49,7 +49,7 @@ $query = "INSERT INTO $db_table_users (
     'null',
     'Jon',
     'Creative',
-    'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',
+    '$password',
     'jcreat@test.org',
     'avatar_$time_stamp.jpg',
     '+48 516 146 491',
@@ -61,7 +61,7 @@ $query = "INSERT INTO $db_table_users (
 $statement = $db->prepare($query);
 $statement->execute();
 
-// password = pass123
+$password = hash($db_password_encoding, "pass123");
 // activation_key = act123
 $time_stamp = microtime(true);
 $time_stamp_db = date($db_date_format, $time_stamp);
@@ -81,7 +81,7 @@ $query = "INSERT INTO $db_table_users (
     'null',
     'Tom',
     'Everstrong',
-    '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c',
+    '$password',
     'tom4ever@test.com',
     'avatar_$time_stamp.jpg',
     '+48 564 123 444',
@@ -93,7 +93,7 @@ $query = "INSERT INTO $db_table_users (
 $statement = $db->prepare($query);
 $statement->execute();
 
-// password = notpass123
+$password = hash($db_password_encoding, "notpass123");
 // activation_key = notact123
 $time_stamp = microtime(true);
 $time_stamp_db = date($db_date_format, $time_stamp);
@@ -113,7 +113,7 @@ $query = "INSERT INTO $db_table_users (
     'null',
     'Dżesika',
     'Brzęczyszczykiewicz',
-    '89232f32d9b8cfb6d1d8ca470089b80f31eb72548a78c0063df3cfca23e9c27f',
+    '$password',
     'sweetbrokacik@test.pl',
     'avatar_$time_stamp.jpg',
     '+48 564 645 123',
@@ -127,58 +127,6 @@ $statement->execute();
 
 
 response_message("TABLE $db_table_users", "FILLED");
-
-
-
-/*
-
-////////////////////////////////////////////////////////
-// Offers table fulfill.
-
-// First offer
-$time_stamp = microtime(true);
-$time_stamp_db = date($db_date_format, $time_stamp);
-$time_stamp_db_expires = date($db_date_format, $time_stamp + $one_week);
-$query = "INSERT INTO $db_table_users (
-	`offer_id`,
-	`owner_id`,
-	`is_active`,
-	`is_archived`,
-	`description`,
-	`category_id`,
-	`price`,
-	`localization`,
-	`at_teachers_house`,
-	`at_students_house`,
-	`get_to_student_for_free`,
-	`creation_timestamp`,
-	`last_modification_timestamp`,
-	`visibility_expire_timestamp`,
-	`promoted_expire_timestamp`
-    ) VALUES (
-    'null',
-	'7',
-	'1',
-	'0',
-	'Math tutoring for dummies!',
-	'2',
-	'40.0',
-	'Łódź',
-	'1',
-	'1',
-	'1',
-	'$time_stamp_db',
-	'null',
-	'$time_stamp_db_expires',
-	'null'
-)";
-$statement = $db->prepare($query);
-$statement->execute();
-
-
-response_message("TABLE $db_table_users", "FILLED");
-*/
-
 
 
 ?>
