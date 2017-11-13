@@ -12,7 +12,7 @@
 ### Pre-check:
 
 **session**:
-* `E202` - if user is already logged
+* `E202`, *user* - if user is already logged
 
 
 ### Parameters (+ necesery, ? optional):

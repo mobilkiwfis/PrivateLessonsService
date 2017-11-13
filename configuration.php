@@ -10,6 +10,8 @@ error_reporting(-1);
 /////////////////////////////////////////////////////////
 // Database values
 
+header('Access-Control-Allow-Origin: *');
+
 $use_local_host = true;
 
 $localhost_database_host_name = "localhost";

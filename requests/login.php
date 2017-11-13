@@ -109,6 +109,8 @@ if ($good_email &&
         {
             $user->db_id = $result->user_id;
             $user->is_logged = true;
+            $user->is_activated = !!$result->is_activated;
+            $user->is_banned = !!$result->is_banned;
 
             $_SESSION["user"] = $user;
 

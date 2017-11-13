@@ -12,31 +12,27 @@
 ### Pre-check:
 
 **session**:
-* `E202`, *user* - if user is already logged
+* `E201`, *user* - if user is not logged in
 
 
 ### Parameters (+ necesery, ? optional):
 
 **+ firstname** : *string* - User's firstname
-* `E301` - this = null
 * `E311` - this.length < 1
 * `E312` - this.length > 100
 * `E310` - match "/[0-9]|[^\w\'\` ]|\_/"
 
 **+ surname** : *string* - User's surname
-* `E301` - this = null
 * `E311` - this.length < 1
 * `E312` - this.length > 100
 * `E310` - match "/[0-9]|[^\w\'\` ]|\_/"
 
 **+ password** : *string* - User's password
-* `E301` - this = null
 * `E311` - this.length < 6
 
-**+ email** : *string* - User's email
-* `E301` - this = null
-* `E310` - filter_var(this, FILTER_VALIDATE_EMAIL) failed
-* `E320` - already in database
+**+ phone_number** : *string* - User's phone number
+* `E310` - this.length != 9
+* `E302` - not matches "/[0-9]/"
 
 
 ### Returns:
@@ -48,3 +44,6 @@
 ##### When at least one stage failed:
 **status**: "NO_OK" 
 **data**: array with errors
+* `E301`, *no_fields_to_change*: No fields to change
+* `E201`, *not_active*: Account has not been activated yet
+* `E201`, *banned*: Account has been banned
