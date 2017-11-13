@@ -66,7 +66,7 @@ else
         `email` varchar(100) NOT NULL UNIQUE,
         `photo` varchar(128) NOT NULL,
         `phone_number` varchar(30),
-        `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '1970-01-01 00:00:01',
+        `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '1970-01-02 00:00:01',
         `is_activated` bool NOT NULL DEFAULT '0',
         `activation_key` varchar(128) NOT NULL UNIQUE,
         `is_banned` bool NOT NULL DEFAULT '0',
@@ -105,7 +105,7 @@ else
         `at_teachers_house` bool NOT NULL DEFAULT '0',
         `at_students_house` bool NOT NULL DEFAULT '0',
         `get_to_student_for_free` bool NOT NULL DEFAULT '0',
-	    `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '1970-01-01 00:00:01',
+	    `creation_timestamp` TIMESTAMP NOT NULL DEFAULT '1970-01-02 00:00:01',
 	    `last_modification_timestamp` TIMESTAMP NULL DEFAULT NULL,
         `visibility_expire_timestamp` TIMESTAMP NULL DEFAULT NULL,
         `promoted_expire_timestamp` TIMESTAMP NULL DEFAULT NULL,
@@ -216,9 +216,9 @@ else
         `offer_id` int(11) NOT NULL,
         `charge` FLOAT NOT NULL,
         `payment_method` varchar(100) NOT NULL,
-        `payment_date` TIMESTAMP NOT NULL DEFAULT '1970-01-01 00:00:01',
-        `start_date` TIMESTAMP NOT NULL DEFAULT '1970-01-01 00:00:01',
-        `end_date` TIMESTAMP NOT NULL DEFAULT '1970-01-01 00:00:01',
+        `payment_date` TIMESTAMP NOT NULL DEFAULT '1970-01-02 00:00:01',
+        `start_date` TIMESTAMP NOT NULL DEFAULT '1970-01-02 00:00:01',
+        `end_date` TIMESTAMP NOT NULL DEFAULT '1970-01-02 00:00:01',
 
         PRIMARY KEY (`payment_id`)
     )";

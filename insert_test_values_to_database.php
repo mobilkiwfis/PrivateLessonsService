@@ -46,7 +46,7 @@ $query = "INSERT INTO $db_table_users (
     `activation_key`,
     `is_banned`
     ) VALUES (
-    'null',
+    NULL,
     'Jon',
     'Creative',
     '$password',
@@ -78,7 +78,7 @@ $query = "INSERT INTO $db_table_users (
     `activation_key`,
     `is_banned`
     ) VALUES (
-    'null',
+    NULL,
     'Tom',
     'Everstrong',
     '$password',
@@ -110,7 +110,7 @@ $query = "INSERT INTO $db_table_users (
     `activation_key`,
     `is_banned`
     ) VALUES (
-    'null',
+    NULL,
     'Dżesika',
     'Brzęczyszczykiewicz',
     '$password',
