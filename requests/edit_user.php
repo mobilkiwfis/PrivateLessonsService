@@ -175,6 +175,89 @@ if ($phone_number !== null)
 } 
 
 
+function base64_to_jpeg($base64_string, $output_file) {
+    // open the output file for writing
+    $ifp = fopen($output_file, "wb"); 
+
+    // split the string on commas
+    // $data[0] == "data:image/png;base64"
+    // $data[1] == <actual base64 string>
+    $data = explode(",", $base64_string);
+
+    // we could add validation here with ensuring count($data) > 1
+    fwrite($ifp, base64_decode($data[1]));
+
+    // clean up the file resource
+    fclose($ifp); 
+}
+
+
+function resize_image($file, $w, $h, $crop = FALSE) {
+    list($width, $height) = getimagesize($file);
+    /*
+    $r = $width / $height;
+    if ($crop) {
+        if ($width > $height) {
+            $width = ceil($width-($width*abs($r-$w/$h)));
+        } else {
+            $height = ceil($height-($height*abs($r-$w/$h)));
+        }
+        $newwidth = $w;
+        $newheight = $h;
+    } else {
+        if ($w/$h > $r) {
+            $newwidth = $h*$r;
+            $newheight = $h;
+        } else {
+            $newheight = $w/$r;
+            $newwidth = $w;
+        }
+    }
+    */
+    $src = imagecreatefromjpeg($file);
+    //$dst = imagecreatetruecolor($newwidth, $newheight);
+    $dst = imagecreatetruecolor($w, $h);
+    //imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $w, $h, $width, $height);
+
+    return $dst;
+}
+
+
+// Phone number validation
+if ($photo !== null)
+{
+    $avatars_path = "../images/avatars/";
+    $image_id = microtime();
+    $uploaded_file_name = "original_$image_id.jpg";
+    $avatar_file_name = $avatars_path . "avatar_$image_id.jpg";
+
+    try 
+    {
+        base64_to_jpeg($photo, $uploaded_file_name);
+    } 
+    catch (Exception $e) 
+    {
+        $response->data_add(new ResponseElement("E310", "photo"));
+        $response->set_status("NO_OK");
+    }
+
+    try 
+    {
+        $avatar = resize_image($uploaded_file_name, 256, 256);
+        imagejpeg($avatar, $avatar_file_name);
+        unlink($uploaded_file_name);
+    } 
+    catch (Exception $e) 
+    {
+        $response->data_add(new ResponseElement("E310", "photo"));
+        $response->set_status("NO_OK");
+    }
+
+    if ($good_photo) $change_photo = true;
+} 
+
+
 
 
 if (!($good_firstname &&
