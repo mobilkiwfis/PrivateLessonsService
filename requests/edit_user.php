@@ -175,25 +175,26 @@ if ($phone_number !== null)
 } 
 
 
-function base64_to_jpeg($base64_string, $output_file) {
+function base64_to_jpeg($base64_string, $output_file, $avatars_path) {
     // open the output file for writing
-    $ifp = fopen($output_file, "wb"); 
+    $ifp = fopen($avatars_path . $output_file, "wb"); 
 
     // split the string on commas
     // $data[0] == "data:image/png;base64"
     // $data[1] == <actual base64 string>
-    $data = explode(",", $base64_string);
+    //$data = explode(",", $base64_string);
 
     // we could add validation here with ensuring count($data) > 1
-    fwrite($ifp, base64_decode($data[1]));
+    //fwrite($ifp, base64_decode($data[1]));
+    fwrite($ifp, base64_decode($base64_string));
 
     // clean up the file resource
     fclose($ifp); 
 }
 
 
-function resize_image($file, $w, $h, $crop = FALSE) {
-    list($width, $height) = getimagesize($file);
+function resize_image($file, $avatars_path, $w, $h, $crop = FALSE) {
+    list($width, $height) = getimagesize($avatars_path . $file);
     /*
     $r = $width / $height;
     if ($crop) {
@@ -214,7 +215,7 @@ function resize_image($file, $w, $h, $crop = FALSE) {
         }
     }
     */
-    $src = imagecreatefromjpeg($file);
+    $src = imagecreatefromjpeg($avatars_path . $file);
     //$dst = imagecreatetruecolor($newwidth, $newheight);
     $dst = imagecreatetruecolor($w, $h);
     //imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
@@ -228,13 +229,13 @@ function resize_image($file, $w, $h, $crop = FALSE) {
 if ($photo !== null)
 {
     $avatars_path = "../images/avatars/";
-    $image_id = microtime();
+    $image_id = microtime(true);
     $uploaded_file_name = "original_$image_id.jpg";
-    $avatar_file_name = $avatars_path . "avatar_$image_id.jpg";
+    $avatar_file_name = "avatar_$image_id.jpg";
 
     try 
     {
-        base64_to_jpeg($photo, $uploaded_file_name);
+        base64_to_jpeg($photo, $uploaded_file_name, $avatars_path);
     } 
     catch (Exception $e) 
     {
@@ -244,15 +245,22 @@ if ($photo !== null)
 
     try 
     {
-        $avatar = resize_image($uploaded_file_name, 256, 256);
-        imagejpeg($avatar, $avatar_file_name);
-        unlink($uploaded_file_name);
+        $avatar = resize_image($uploaded_file_name, $avatars_path, 256, 256);
+        imagejpeg($avatar, $avatars_path . $avatar_file_name);
+        unlink($avatars_path . $uploaded_file_name);
     } 
     catch (Exception $e) 
     {
         $response->data_add(new ResponseElement("E310", "photo"));
         $response->set_status("NO_OK");
     }
+
+    // Remove old image if user had one
+    if ($user->photo !== "default_avatar.jpg")
+        unlink($avatars_path . $user->photo);
+    
+    // Assign new link
+    $photo = $avatar_file_name;
 
     if ($good_photo) $change_photo = true;
 } 
@@ -288,7 +296,7 @@ $query = "UPDATE $db_table_users SET ";
 
 $query_set = "";
 if ($change_firstname) $query_set .= ", firstname=:firstname";
-if ($change_surname) $quequery_setry .= ", surname=:surname";
+if ($change_surname) $query_set .= ", surname=:surname";
 if ($change_password) $query_set .= ", password=:password";
 if ($change_phone_number) $query_set .= ", phone_number=:phone_number";
 if ($change_photo) $query_set .= ", photo=:photo";

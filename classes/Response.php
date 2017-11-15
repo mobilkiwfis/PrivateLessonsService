@@ -62,6 +62,40 @@ class Response {
         $this->data = $data;
         return true;
     }
+
+
+    /**
+     * Merge response data.
+     *
+     * @param [object] $data - Object that will be set as response data.
+     * @return bool - true when success, false when failed ($this->response is not an Response object)
+     */
+    public function merge_with($response) : bool 
+    {
+        if ($response instanceof Response)
+        {
+            if ($response->status === "NO_OK")
+            {
+                $this->status = $response->status;
+            } // no else
+
+            if (is_array($response->data)) {
+                foreach ($response->data as $el) 
+                {
+                    array_push($this->data, $el);
+                }
+            } 
+            else 
+            {
+                $this->data = $response->data;
+            }
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
 }
 
 ?>

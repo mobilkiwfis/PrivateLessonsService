@@ -28,8 +28,29 @@ class User {
     }
 
 
-    public function login($db, $response, $email, $password) : Response
+    public function logout() : Response 
     {
+        $response = new Response();
+
+        if ($this->is_logged) 
+        {
+            $this->is_logged = false;
+            $response->set_status("OK");
+        } 
+        else 
+        {
+            $response->set_status("NO_OK");
+            $response->data_add(new ResponseElement("E201", "user"));
+        }
+
+        return $response;
+    }
+
+
+    public function login($db, $email, $password) : Response
+    {
+        $response = new Response();
+
         // User already logged in
         if ($this->is_logged === true) 
         {

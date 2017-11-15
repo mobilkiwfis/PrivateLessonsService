@@ -27,6 +27,9 @@
 * `E312` - this.length > 100
 * `E310` - match "/[0-9]|[^\w\'\` ]|\_/"
 
+**+ photo** : *base64 string* - Avatar
+* `E310` - faled to read the image
+
 **+ password** : *string* - User's password
 * `E311` - this.length < 6
 

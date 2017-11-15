@@ -108,6 +108,7 @@ if ($good_email &&
         if ($can_log_in)
         {
             $user->merge_data($result);
+            $user->is_logged = true;
 
             $_SESSION["user"] = $user;
 
