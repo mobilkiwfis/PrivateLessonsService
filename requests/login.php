@@ -96,7 +96,7 @@ if ($good_email &&
         if ($result->is_activated != true)
         {
             $can_log_in = false;
-            $response->data_add(new ResponseElement("E201", "not_active"));
+            $response->data_add(new ResponseElement("E201", "not_activated"));
         }
         
         if ($result->is_banned == true)
@@ -107,10 +107,7 @@ if ($good_email &&
 
         if ($can_log_in)
         {
-            $user->db_id = $result->user_id;
-            $user->is_logged = true;
-            $user->is_activated = !!$result->is_activated;
-            $user->is_banned = !!$result->is_banned;
+            $user->merge_data($result);
 
             $_SESSION["user"] = $user;
 

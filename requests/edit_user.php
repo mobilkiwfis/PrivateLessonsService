@@ -13,6 +13,8 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $user = (isset($_SESSION["user"])) ? $_SESSION["user"] : new User();
 $response = new Response();
 
+$user->pull_data($db);
+
 
 // User not logged in
 if ($user->is_logged === false) 
@@ -35,7 +37,7 @@ else
     if ($user->is_activated === false) 
     {
         $response->set_status("NO_OK");
-        $response->data_add(new ResponseElement("E201", "not_active"));
+        $response->data_add(new ResponseElement("E201", "not_activated"));
         
         die(json_encode($response));
     } 
@@ -88,7 +90,6 @@ if ($firstname !== null)
 } 
 
 
-
 // Surname validation
 if ($surname !== null)
 {
@@ -139,14 +140,24 @@ if ($phone_number !== null)
 {
     $fpn = array(); // filtred phone number
 
-    if (preg_match("/[0-9]/", $phone_number, $fpn))
+    if (preg_match_all("/[0-9]/", $phone_number, $fpn))
     {
-        if (count($filtred_phone) === 9)
+        $fpn = $fpn[0];
+
+        if (count($fpn) === 9)
         {
             $phone_number =
                 $fpn[0] . $fpn[1] . $fpn[2] . "-" .
                 $fpn[3] . $fpn[4] . $fpn[5] . "-" .
                 $fpn[6] . $fpn[7] . $fpn[8];
+        } 
+        else if (count($fpn) === 11)
+        {
+            $phone_number =
+                $fpn[0] . $fpn[1] . " " .
+                $fpn[2] . $fpn[3] . $fpn[4] . "-" .
+                $fpn[5] . $fpn[6] . $fpn[7] . "-" .
+                $fpn[8] . $fpn[9] . $fpn[10];
         } 
         else 
         {
@@ -166,22 +177,22 @@ if ($phone_number !== null)
 
 
 
-if (!$good_firstname &&
-    !$good_surname &&
-    !$good_password &&
-    !$good_phone_number &&
-    !$good_photo) 
+if (!($good_firstname &&
+    $good_surname &&
+    $good_password &&
+    $good_phone_number &&
+    $good_photo))
 {
     $response->set_status("NO_OK");
     die(json_encode($response));
 }
 
 
-if (!$change_firstname ||
-    !$change_surname ||
-    !$change_password ||
-    !$change_phone_number ||
-    !$change_photo) 
+if (!($change_firstname ||
+    $change_surname ||
+    $change_password ||
+    $change_phone_number ||
+    $change_photo)) 
 {
     $response->data_add(new ResponseElement("E301", "no_fields_to_change"));
     $response->set_status("NO_OK");
@@ -190,23 +201,27 @@ if (!$change_firstname ||
 
 
 
-$query = "UPDATE $db_table_users SET";
+$query = "UPDATE $db_table_users SET ";
 
-if ($change_firstname) $query .= " firstname=:firstname";
-if ($change_surname) $query .= " surname=:surname";
-if ($change_password) $query .= " password=:password";
-if ($change_phone_number) $query .= " phone_number=:phone_number";
-if ($change_photo) $query .= " photo=:photo";
+$query_set = "";
+if ($change_firstname) $query_set .= ", firstname=:firstname";
+if ($change_surname) $quequery_setry .= ", surname=:surname";
+if ($change_password) $query_set .= ", password=:password";
+if ($change_phone_number) $query_set .= ", phone_number=:phone_number";
+if ($change_photo) $query_set .= ", photo=:photo";
 
-$query .= "WHERE user_id=:db_id";
+$query_set = substr($query_set, 2);
 
+$query .= $query_set;
+$query .= " WHERE user_id=:user_id";
 
 $statement = $db->prepare($query);
-$statement->bindParam(":firstname", $firstname, PDO::PARAM_STR);
-$statement->bindParam(":surname", $surname, PDO::PARAM_STR);
-$statement->bindParam(":password", $password, PDO::PARAM_STR);
-$statement->bindParam(":phone_number", $phone_number, PDO::PARAM_STR);
-$statement->bindParam(":db_id", $user->db_id, PDO::PARAM_INT);
+if ($change_firstname) $statement->bindParam(":firstname", $firstname, PDO::PARAM_STR);
+if ($change_surname) $statement->bindParam(":surname", $surname, PDO::PARAM_STR);
+if ($change_password) $statement->bindParam(":password", $password, PDO::PARAM_STR);
+if ($change_phone_number) $statement->bindParam(":phone_number", $phone_number, PDO::PARAM_STR);
+if ($change_photo) $statement->bindParam(":photo", $photo, PDO::PARAM_STR);
+$statement->bindParam(":user_id", $user->user_id, PDO::PARAM_INT);
 $statement->execute();
 
 $response->set_status("OK");

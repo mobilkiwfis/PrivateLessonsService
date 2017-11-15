@@ -45,5 +45,5 @@
 **status**: "NO_OK" 
 **data**: array with errors
 * `E301`, *no_fields_to_change*: No fields to change
-* `E201`, *not_active*: Account has not been activated yet
+* `E201`, *not_activated*: Account has not been activated yet
 * `E201`, *banned*: Account has been banned

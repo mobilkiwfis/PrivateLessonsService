@@ -35,5 +35,5 @@
 **status**: "NO_OK" 
 **data**: array of errors (including following)
 * `E300`, *user*: No matching email and password in database
-* `E201`, *not_active*: Account has not been activated yet
+* `E201`, *not_activated*: Account has not been activated yet
 * `E201`, *banned*: Account has been banned
