@@ -10,7 +10,7 @@ session_start();
 $db = new PDO("mysql:host=$db_host;dbname=$db_name", $db_username, $db_password);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 
-$user = (isset($_SESSION["user"])) ? $_SESSION["user"] : new User();
+$_SESSION["user"] = $user = (isset($_SESSION["user"])) ? $_SESSION["user"] : new User();
 $response = new Response();
 
 
@@ -109,8 +109,6 @@ if ($good_email &&
         {
             $user->merge_data($result);
             $user->is_logged = true;
-
-            $_SESSION["user"] = $user;
 
             $response->set_status("OK");
             die(json_encode($response));

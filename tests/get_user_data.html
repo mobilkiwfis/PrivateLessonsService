@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get user data</title>
+
+    <script src="jquery-3.2.1.min.js"></script>
+
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+        
+        .string {
+            color: green;
+        }
+        
+        .number {
+            color: darkorange;
+        }
+        
+        .boolean {
+            color: blue;
+        }
+        
+        .null {
+            color: magenta;
+        }
+        
+        .key {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        $(document).ready(function() {
+
+            function success(response) {
+                console.log(response);
+                $("#output").html(
+                    syntaxHighlight(JSON.stringify(response, undefined, 4))
+                );
+            }
+
+            function error(response) {
+                console.log(response);
+                $("#output").html(
+                    syntaxHighlight(JSON.stringify(response, undefined, 4))
+                );
+            }
+
+            function button() {
+
+                var path = "/PrivateLessonsService/requests/get_user_data.php";
+
+                var email = $("#email").val();
+
+                $.ajax({
+                    url: path,
+                    method: "GET",
+                    dataType: "json",
+                    data: {
+                        email: email
+                    },
+                    success: success,
+                    error: error
+                });
+            }
+
+            $("#send").click(button);
+        });
+    </script>
+
+    <div id="form">
+        <input type="text" id="email" value="jcreat@test.org">
+        <br>
+        <button id="send">Send</button>
+    </div>
+
+    <pre id="output"></pre>
+</body>
+
+</html>

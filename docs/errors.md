@@ -16,3 +16,4 @@
 * `E311`: value is too short
 * `E312`: value is too long
 * `E320`: value already exists in database
+* `E321`: value not exists in database
