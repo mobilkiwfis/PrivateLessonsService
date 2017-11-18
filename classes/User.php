@@ -187,7 +187,7 @@ class User {
 
     public function merge_data($data) : void
     {
-        $this->user_id = $data->user_id;
+        $this->user_id = intval($data->user_id);
         $this->firstname = $data->firstname;
         $this->surname = $data->surname;
         $this->password = $data->password;
