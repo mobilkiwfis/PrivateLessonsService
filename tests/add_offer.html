@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add offer</title>
+
+    <script src="jquery-3.2.1.min.js"></script>
+
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+        
+        .string {
+            color: green;
+        }
+        
+        .number {
+            color: darkorange;
+        }
+        
+        .boolean {
+            color: blue;
+        }
+        
+        .null {
+            color: magenta;
+        }
+        
+        .key {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        $(document).ready(function() {
+
+            function success(response) {
+                $("#error").html("");
+
+                console.log(response);
+                $("#output").html(
+                    syntaxHighlight(JSON.stringify(response, undefined, 4))
+                );
+            }
+
+            function error(response) {
+                $("#output").html("");
+
+                console.log(response);
+                response = JSON.stringify(response, undefined, 4);
+                response = response.replace(/\\r/g, "");
+                response = response.replace(/\\n/g, "<br>");
+                $("#error").html(response);
+            }
+
+            function button() {
+
+                var path = "/PrivateLessonsService/requests/add_offer.php";
+
+                var data = {};
+
+                var description = $("#description").val();
+                if (description.length > 0) data.description = description;
+                var category = $("#category").val();
+                if (category.length > 0) data.category = category;
+                var price = $("#price").val();
+                if (price.length > 0) data.price = price;
+                var localization = $("#localization").val();
+                if (localization.length > 0) data.localization = localization;
+                var at_teachers_house = $("#at_teachers_house").prop("checked");
+                data.at_teachers_house = at_teachers_house;
+                var at_students_house = $("#at_students_house").prop("checked");
+                data.at_students_house = at_students_house;
+                var get_to_student_for_free = $("#get_to_student_for_free").prop("checked");
+                data.get_to_student_for_free = get_to_student_for_free;
+
+                data.mo_morning = $("#mo_morning").prop("checked");
+                data.mo_evening = $("#mo_evening").prop("checked");
+                data.tu_morning = $("#tu_morning").prop("checked");
+                data.tu_evening = $("#tu_evening").prop("checked");
+                data.we_morning = $("#we_morning").prop("checked");
+                data.we_evening = $("#we_evening").prop("checked");
+                data.th_morning = $("#th_morning").prop("checked");
+                data.th_evening = $("#th_evening").prop("checked");
+                data.fr_morning = $("#fr_morning").prop("checked");
+                data.fr_evening = $("#fr_evening").prop("checked");
+                data.sa_morning = $("#sa_morning").prop("checked");
+                data.sa_evening = $("#sa_evening").prop("checked");
+                data.su_morning = $("#su_morning").prop("checked");
+                data.su_evening = $("#su_evening").prop("checked");
+
+
+                $.ajax({
+                    url: path,
+                    method: "POST",
+                    dataType: "json",
+                    data: data,
+                    success: success,
+                    error: error
+                });
+            }
+
+            $("#send").click(button);
+        });
+    </script>
+
+    <div id="form">
+        <textarea type="text" id="description">Opis oferty.</textarea>
+        <br>
+        <input type="text" id="category" value="math">
+        <br>
+        <input type="text" id="price" value="+16.146zł">
+        <br>
+        <input type="text" id="localization" value="Łódź">
+        <br> at_teachers_house: <input type="checkbox" id="at_teachers_house">
+        <br> at_students_house: <input type="checkbox" id="at_students_house" checked>
+        <br> get_to_student_for_free: <input type="checkbox" id="get_to_student_for_free" checked>
+        <br>
+        <br> mo_morning: <input type="checkbox" id="mo_morning" checked>
+        <br> mo_evening: <input type="checkbox" id="mo_evening" checked>
+        <br> tu_morning: <input type="checkbox" id="tu_morning">
+        <br> tu_evening: <input type="checkbox" id="tu_evening">
+        <br> we_morning: <input type="checkbox" id="we_morning">
+        <br> we_evening: <input type="checkbox" id="we_evening">
+        <br> th_morning: <input type="checkbox" id="th_morning">
+        <br> th_evening: <input type="checkbox" id="th_evening" checked>
+        <br> fr_morning: <input type="checkbox" id="fr_morning" checked>
+        <br> fr_evening: <input type="checkbox" id="fr_evening">
+        <br> sa_morning: <input type="checkbox" id="sa_morning" checked>
+        <br> sa_evening: <input type="checkbox" id="sa_evening">
+        <br> su_morning: <input type="checkbox" id="su_morning" checked>
+        <br> su_evening: <input type="checkbox" id="su_evening" checked>
+        <br>
+        <button id="send">Send</button>
+    </div>
+
+    <pre id="output"></pre>
+    <div id="error"></div>
+</body>
+
+</html>

@@ -22,7 +22,7 @@
 
 ### Returns:
 
-##### When registered succesfull:
+##### When succesfull:
 **status**: "OK"
 **data**: empty array
 
