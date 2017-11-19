@@ -82,15 +82,18 @@
 
                 var path = "/PrivateLessonsService/requests/get_user_data.php";
 
+                var data = {};
+
+                var user_id = $("#user_id").val();
+                if (user_id.length > 0) data.user_id = user_id;
                 var email = $("#email").val();
+                if (email.length > 0) data.email = email;
 
                 $.ajax({
                     url: path,
                     method: "GET",
                     dataType: "json",
-                    data: {
-                        email: email
-                    },
+                    data: data,
                     success: success,
                     error: error
                 });
@@ -102,6 +105,8 @@
 
     <div id="form">
         <input type="text" id="email" value="jcreat@test.org">
+        <br>
+        <input type="text" id="user_id" value="1">
         <br>
         <button id="send">Send</button>
     </div>

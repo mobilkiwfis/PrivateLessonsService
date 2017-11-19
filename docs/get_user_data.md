@@ -16,8 +16,13 @@
 
 ### Parameters (+ necesery, ? optional):
 
-**? email** : *string* - User's email. If is not set, current logged user email is used instead.
+**? user\_id** : *string* - User's id. If is not set, current logged user_id is used instead
 * `E310` - filter_var(this, FILTER_VALIDATE_EMAIL) failed
+
+**? email** : *string* - User's email. If is not set, current logged user email is used instead
+* `E310` - this < 0
+
+Note: As there are both parameters given, both are checked but only user_id is used.
 
 
 ### Returns:
@@ -29,5 +34,5 @@
 ##### When at least one stage failed:
 **status**: "NO_OK" 
 **data**: array of errors (including following)
-* `E301`, *email*: User was not logged in and email param was not set
-* `E321`, *email*: Account has not been found in database, user doesnt exist
+* `E301`, *user*: User was not logged in, and there were not set user\_id and email either
+* `E321`, *user*: User with user_id or email was not found in database

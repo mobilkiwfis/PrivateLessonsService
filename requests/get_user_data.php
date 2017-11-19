@@ -18,27 +18,13 @@ $response = new Response();
 // Handle input
 $email = (isset($_GET["email"])) ? $_GET["email"] : null;
 $good_email = true;
+$user_id = (isset($_GET["user_id"])) ? $_GET["user_id"] : null;
+$good_user_id = true;
 
 
-// No email was set, it means user asks for its own data.
-if ($email === null) {
-    $user->pull_data($db);
 
-    // User not logged in
-    if ($user->is_logged === false) 
-    {
-        $good_email = false;
-        $response->set_status("NO_OK");
-        $response->data_add(new ResponseElement("E301", "email"));
-    }
-    else 
-    {
-        $good_email = true;
-        $email = $user->email;
-    }
-} 
-else
-{
+// Validate email
+if ($email !== null) {
     $email = trim($email);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
@@ -49,19 +35,76 @@ else
         $response->data_add(new ResponseElement("E310", "email"));
     }
 } 
-
-if (!$good_email)
+else 
 {
-    die(json_encode($response));
+    $good_email = false;
+}
+
+
+// Validate id
+if ($user_id !== null) {
+    $user_id = trim($user_id); // Remove spaces from begining and ending
+    $user_id = intval($user_id); // To int
+
+    if ($user_id < 0)
+    {
+        $good_user_id = false;
+        $response->set_status("NO_OK");
+        $response->data_add(new ResponseElement("E310", "user_id"));
+    }
+} 
+else 
+{
+    $good_user_id = false;
 }
 
 
 
 
+
+// No email or id was set, it means user asks for its own data.
+if (!$good_email && !$good_user_id) {
+    $user->pull_data($db);
+
+    // User not logged in
+    if ($user->is_logged === false) 
+    {
+        $good_user_id = false; // just to make sure
+        $response->set_status("NO_OK");
+        $response->data_add(new ResponseElement("E301", "user"));
+    }
+    else 
+    {
+        $good_user_id = true;
+        $user_id = $user->user_id;
+    }
+}
+
+
+if (!$good_email && !$good_user_id)
+{
+    die(json_encode($response));
+} // else means at least one is good
+
+
+
 // search in database for user
-$query = "SELECT * FROM $db_table_users WHERE email=:email";
-$statement = $db->prepare($query);
-$statement->bindParam(":email", $email, PDO::PARAM_STR);
+$query = "SELECT * FROM $db_table_users WHERE ";
+$statement = null;
+
+if ($good_user_id)
+{
+    $query .= "user_id=:user_id";
+    $statement = $db->prepare($query);
+    $statement->bindParam(":user_id", $user_id, PDO::PARAM_STR);
+} 
+else if ($good_email)
+{
+    $query .= "email=:email";
+    $statement = $db->prepare($query);
+    $statement->bindParam(":email", $email, PDO::PARAM_STR);
+}
+
 $statement->execute();
 
 
@@ -80,7 +123,7 @@ if ($statement->rowCount() > 0)
 else 
 {
     $response->set_status("NO_OK");
-    $response->data_add(new ResponseElement("E321", "email"));
+    $response->data_add(new ResponseElement("E321", "user"));
 }
 
 die(json_encode($response));
