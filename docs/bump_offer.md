@@ -17,7 +17,7 @@
 
 ### Parameters (+ necesery, ? optional):
 
-**+ offer_id** : *string* - Offer's id
+**+ offer_id** : *int* - Offer's id
 * `E301` - this = null
 * `E321` - offer not exist
 

@@ -16,7 +16,7 @@
 
 ### Parameters (+ necesery, ? optional):
 
-**? user\_id** : *string* - User's id. If is not set, current logged user_id is used instead
+**? user\_id** : *int* - User's id. If is not set, current logged user_id is used instead
 * `E310` - filter_var(this, FILTER_VALIDATE_EMAIL) failed
 
 **? email** : *string* - User's email. If is not set, current logged user email is used instead
