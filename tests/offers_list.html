@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add offer</title>
+    <title>Offers list</title>
 
     <script src="jquery-3.2.1.min.js"></script>
 
@@ -81,17 +81,17 @@
 
             function button() {
 
-                var path = "/PrivateLessonsService/requests/add_offer.php";
-                //var path = "/requests/add_offer.php";
+                var path = "/PrivateLessonsService/requests/offers_list.php";
+                //var path = "/requests/offers_list.php";
 
                 var data = {};
 
-                var description = $("#description").val();
-                if (description.length > 0) data.description = description;
                 var category = $("#category").val();
                 if (category.length > 0) data.category = category;
-                var price = $("#price").val();
-                if (price.length > 0) data.price = price;
+                var price_from = $("#price_from").val();
+                if (price_from.length > 0) data.price_from = price_from;
+                var price_to = $("#price_to").val();
+                if (price_to.length > 0) data.price_to = price_to;
                 var localization = $("#localization").val();
                 if (localization.length > 0) data.localization = localization;
                 var at_teachers_house = $("#at_teachers_house").prop("checked");
@@ -119,7 +119,7 @@
 
                 $.ajax({
                     url: path,
-                    method: "POST",
+                    method: "GET",
                     dataType: "json",
                     data: data,
                     success: success,
@@ -132,11 +132,11 @@
     </script>
 
     <div id="form">
-        <textarea type="text" id="description">Opis oferty.</textarea>
-        <br>
         <input type="text" id="category" value="math">
         <br>
-        <input type="text" id="price" value="+16.146zł">
+        <input type="text" id="price_from" value="0">
+        <br>
+        <input type="text" id="price_to" value="50">
         <br>
         <input type="text" id="localization" value="Łódź">
         <br> at_teachers_house: <input type="checkbox" id="at_teachers_house">

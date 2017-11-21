@@ -116,6 +116,7 @@ if ($description !== null)
     $description = preg_replace("/\s+/", " ", $description); // Multiple white characters to space
     $description = preg_replace("/</", "&lt;", $description); // < to \<
     $description = preg_replace("/>/", "&gt;", $description); // < to \<
+    $description = preg_replace("/(\s*{br}\s*)/", "{br}", $description); // remove space bofore new line
     $description = preg_replace("/{br}/", "<br>", $description); // market into html new line
 } 
 else

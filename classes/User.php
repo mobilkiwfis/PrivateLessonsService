@@ -185,7 +185,7 @@ class User {
     }
 
 
-    public function merge_data($data) : void
+    public function merge_data($data) : bool
     {
         $this->user_id = intval($data->user_id);
         $this->firstname = $data->firstname;
@@ -198,6 +198,8 @@ class User {
         $this->is_activated = !!$data->is_activated;
         $this->activation_key = $data->activation_key;
         $this->is_banned = !!$data->is_banned;
+
+        return true;
     }
 }
 
