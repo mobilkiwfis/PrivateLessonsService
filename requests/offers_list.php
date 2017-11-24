@@ -176,13 +176,8 @@ if (!($good_at_students_house &&
     die(json_encode($response));
 }
 
-//$q_true = 1;
-//$q_false = 0;
-//$q_promoted_expire_timestamp = "promoted_expire_timestamp";
-
 $query = "SELECT * FROM $db_table_offers AS o 
-    INNER JOIN $db_table_categories AS c ON o.category_id=c.category_id 
-    INNER JOIN $db_table_available_days AS a ON a.offer_id=o.offer_id WHERE";
+    INNER JOIN $db_table_categories AS c ON o.category_id=c.category_id WHERE";
 
 
 $query_options = " (is_archived=0 AND is_active=1 AND visibility_expire_timestamp>:time_stamp_db)";
@@ -244,42 +239,19 @@ if ($statement->rowCount() > 0)
 
     foreach ($result as $row)
     {
-        unset($row->subcategory_of);
+        $element = new stdClass();
+        
+        $element->offer_id = $row->offer_id;
+        $element->owner_id = $row->owner_id;
+        $element->category_key = $row->category_key;
+        $element->price = $row->price;
+        $element->promoted_expire_timestamp = $row->promoted_expire_timestamp;
 
-        $response->data_add($row);
+        $response->data_add($element);
     }
 } 
 
 $response->set_status("OK");
-die(json_encode($response));
-
-
-
-
-/*
-// search in database for user
-$query = "SELECT * FROM $db_table_offers WHERE offer_id=:offer_id LIMIT 1";
-$statement = $db->prepare($query);
-$statement->bindParam(":offer_id", $offer_id, PDO::PARAM_INT);
-$statement->execute();
-
-
-
-if ($statement->rowCount() > 0) 
-{
-    $result = $statement->fetchAll(PDO::FETCH_OBJ);
-    $result = $result[0];
-
-    $response->set_status("OK");
-    $response->data_set($result);
-} 
-else 
-{
-    $response->set_status("NO_OK");
-    $response->data_add(new ResponseElement("E321", "offer_id"));
-}
-*/
-
 die(json_encode($response));
 
 ?>

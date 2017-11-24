@@ -47,7 +47,9 @@ if (!$good_offer_id)
 
 
 // search in database for user
-$query = "SELECT * FROM $db_table_offers WHERE offer_id=:offer_id LIMIT 1";
+$query = "SELECT * FROM $db_table_offers AS o 
+    INNER JOIN $db_table_categories AS c ON o.category_id=c.category_id 
+    INNER JOIN $db_table_available_days AS a ON a.offer_id=o.offer_id WHERE o.offer_id=:offer_id LIMIT 1";
 $statement = $db->prepare($query);
 $statement->bindParam(":offer_id", $offer_id, PDO::PARAM_INT);
 $statement->execute();
