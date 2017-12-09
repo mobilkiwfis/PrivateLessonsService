@@ -5,6 +5,8 @@ require_once "../classes/User.php";
 require_once "../classes/Response.php";
 require_once "../classes/ResponseElement.php";
 
+require_once "./send_mail.php";
+
 session_start();
 
 $db = new PDO("mysql:host=$db_host;dbname=$db_name", $db_username, $db_password);
@@ -224,7 +226,7 @@ if ($good_firstname &&
         $statement->bindParam(":activation_key", $activation_key, PDO::PARAM_STR);
         $statement->execute();
 
-
+        send_mail_with_activation_link($email, $activation_key);
 
         $response->set_status("OK");
         die(json_encode($response));

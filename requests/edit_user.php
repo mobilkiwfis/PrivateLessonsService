@@ -215,7 +215,26 @@ function resize_image($file, $avatars_path, $w, $h, $crop = FALSE) {
         }
     }
     */
-    $src = imagecreatefromjpeg($avatars_path . $file);
+    $src = null;
+
+    // As jpg
+    if (!$src) 
+    {
+        try 
+        {
+            $src = @imagecreatefromjpeg($avatars_path . $file);
+        } catch (Expection $e) { }
+    }
+
+    // As png
+    if (!$src) 
+    {
+        try 
+        {
+            $src = @imagecreatefrompng($avatars_path . $file);
+        } catch (Expection $e) { }
+    }
+
     //$dst = imagecreatetruecolor($newwidth, $newheight);
     $dst = imagecreatetruecolor($w, $h);
     //imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
@@ -230,7 +249,7 @@ if ($photo !== null)
 {
     $avatars_path = "../images/avatars/";
     $image_id = microtime(true);
-    $uploaded_file_name = "original_$image_id.jpg";
+    $uploaded_file_name = "original_$image_id.temp";
     $avatar_file_name = "avatar_$image_id.jpg";
 
     try 
