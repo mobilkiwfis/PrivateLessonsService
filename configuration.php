@@ -12,7 +12,7 @@ error_reporting(-1);
 
 header('Access-Control-Allow-Origin: *');
 
-$use_local_host = true;
+$use_local_host = false;
 
 $localhost_database_host_name = "localhost";
 $localhost_database_host_address = "localhost";
@@ -21,10 +21,10 @@ $localhost_database_username = "root";
 $localhost_database_password = "";
 
 
-$server_database_host_name = "mobilki.piotrbartela.pl";
+$server_database_host_name = "mobilkiservice.000webhostapp.com";
 $server_database_host_address = "localhost";
-$server_database_name = "korepetycje";
-$server_database_username = "mobilki";
+$server_database_name = "id4084090_korepetycje";
+$server_database_username = "id4084090_mobilki";
 $server_database_password = "qwe123";
 
 
