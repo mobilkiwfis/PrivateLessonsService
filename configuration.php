@@ -12,7 +12,7 @@ error_reporting(-1);
 
 header('Access-Control-Allow-Origin: *');
 
-$use_local_host = false;
+$use_local_host = true;
 
 $localhost_database_host_name = "localhost";
 $localhost_database_host_address = "localhost";

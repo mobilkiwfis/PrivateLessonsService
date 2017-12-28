@@ -7,6 +7,7 @@
     <title>Add offer</title>
 
     <script src="jquery-3.2.1.min.js"></script>
+    <script src="config.js"></script>
 
     <style>
         pre {
@@ -81,7 +82,11 @@
 
             function button() {
 
-                var path = "/requests/add_offer.php";
+                var path;
+                if (use_local_host)
+                    path = "/PrivateLessonsService/requests/add_offer.php";
+                else
+                    path = "/requests/add_offer.php";
 
                 var data = {};
 

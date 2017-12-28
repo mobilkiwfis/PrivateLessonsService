@@ -7,6 +7,7 @@
     <title>Register</title>
 
     <script src="jquery-3.2.1.min.js"></script>
+    <script src="config.js"></script>
 
     <style>
         pre {
@@ -80,7 +81,11 @@
 
             function button() {
 
-                var path = "/requests/register.php";
+                var path;
+                if (use_local_host)
+                    path = "/PrivateLessonsService/requests/register.php";
+                else
+                    path = "/requests/register.php";
 
                 var firstname = $("#firstname").val();
                 var surname = $("#surname").val();

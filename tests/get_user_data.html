@@ -7,6 +7,7 @@
     <title>Get user data</title>
 
     <script src="jquery-3.2.1.min.js"></script>
+    <script src="config.js"></script>
 
     <style>
         pre {
@@ -80,7 +81,11 @@
 
             function button() {
 
-                var path = "/requests/get_user_data.php";
+                var path;
+                if (use_local_host)
+                    path = "/PrivateLessonsService/requests/get_user_data.php";
+                else
+                    path = "/requests/get_user_data.php";
 
                 var data = {};
 
