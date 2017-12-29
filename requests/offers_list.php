@@ -245,6 +245,7 @@ if ($statement->rowCount() > 0)
         $element->owner_id = $row->owner_id;
         $element->category_key = $row->category_key;
         $element->price = $row->price;
+        $element->localization = $row->localization;
         $element->views = $row->views;
         $element->promoted_expire_timestamp = $row->promoted_expire_timestamp;
 
