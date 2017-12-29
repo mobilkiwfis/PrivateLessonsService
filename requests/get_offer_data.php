@@ -63,6 +63,17 @@ if ($statement->rowCount() > 0)
 
     $response->set_status("OK");
     $response->data_set($result);
+
+
+
+
+
+    // one more view
+    $query = "UPDATE $db_table_offers SET views=views+1 WHERE offer_id=:offer_id LIMIT 1";
+    $statement = $db->prepare($query);
+    $statement->bindParam(":offer_id", $offer_id, PDO::PARAM_INT);
+    $statement->execute();
+
 } 
 else 
 {

@@ -66,6 +66,10 @@ $one_week = $one_day * 7; // $one_day * 7d
 $two_weeks = $one_week * 2; // $one_week * 2
 
 
+$offer_upgrade_price = 6.99;
+$offer_upgrade_currency = "PLN";
+
+
 
 //chmod("configuration.php", 0600); 
 ?>

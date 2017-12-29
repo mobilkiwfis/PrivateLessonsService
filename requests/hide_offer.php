@@ -47,24 +47,42 @@ else
 // Handle input
 $offer_id = (isset($_POST["offer_id"])) ? $_POST["offer_id"] : null;
 $good_offer_id = true;
+$offer_belongs_to_user = true;
+$owner_id = null;
+$offer_is_active = null;
 
 
-
-// Validate offer_id
-if ($offer_id !== null) {
-    $offer_id = trim($offer_id);
+// Offer_id validation
+if ($offer_id !== null)
+{
+    $offer_id = trim($offer_id); // Remove spaces from begining and ending
     $offer_id = intval($offer_id); // To int
+    
+    $query = "SELECT * FROM $db_table_offers WHERE offer_id=:offer_id";
+    $statement = $db->prepare($query);
+    $statement->bindParam(":offer_id", $offer_id, PDO::PARAM_INT);
+    $statement->execute();
 
-    if ($offer_id < 0)
+    if ($statement->rowCount() > 0) 
     {
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+        $result = $result[0];
+
+        $owner_id = $result->owner_id;
+        $owner_id = intval($owner_id);
+
+        $offer_is_active = !!$result->is_active;
+    } 
+    else 
+    {
+        $response->data_add(new ResponseElement("E321", "offer_id"));
         $good_offer_id = false;
-        $response->data_add(new ResponseElement("E310", "offer_id"));
     }
 } 
-else 
+else
 {
-    $good_offer_id = false;
     $response->data_add(new ResponseElement("E301", "offer_id"));
+    $good_offer_id = false;
 }
 
 
@@ -74,36 +92,43 @@ if (!$good_offer_id)
     die(json_encode($response));
 }
 
-
-
-// search in database for user
-$query = "SELECT * FROM $db_table_offers WHERE offer_id=:offer_id AND owner_id=:owner_id LIMIT 1";
-$statement = $db->prepare($query);
-$statement->bindParam(":offer_id", $offer_id, PDO::PARAM_INT);
-$statement->bindParam(":owner_id", $user->user_id, PDO::PARAM_INT);
-$statement->execute();
-
-$offer_data = null;
-
-if ($statement->rowCount() > 0) 
+if ($owner_id !== $user->user_id)
 {
-    $offer_data = $statement->fetchAll(PDO::FETCH_OBJ);
-} 
-else 
+    $response->data_add(new ResponseElement("E200", "offer_not_belongs_to_user"));
+    $offer_belongs_to_user = false;
+}
+
+if (!$offer_belongs_to_user)
 {
     $response->set_status("NO_OK");
-    $response->data_add(new ResponseElement("E321", "offer_id"));
     die(json_encode($response));
 }
 
-$status = new stdClass();
-$status->link = "https://www.paypal.com/pl/home";
-$status->offer_id = $offer_id;
-$status->duration = $two_weeks;
-$status->price = $offer_upgrade_price;
-$status->currency = $offer_upgrade_currency;
-$response->data_set($status);
 
+
+
+$time_stamp = microtime(true);
+$time_stamp_db = date($db_date_format, $time_stamp);
+
+
+$offer_is_active = !$offer_is_active;
+
+
+
+$query = "UPDATE $db_table_offers SET 
+    is_active=:is_active,
+    last_modification_timestamp=:last_modification_timestamp
+    WHERE 
+    offer_id=:offer_id";
+$statement = $db->prepare($query);
+$statement->bindParam(":is_active", $offer_is_active, PDO::PARAM_INT);
+$statement->bindParam(":last_modification_timestamp", $time_stamp_db, PDO::PARAM_STR);
+$statement->bindParam(":offer_id", $offer_id, PDO::PARAM_INT);
+$statement->execute();
+
+$status = new stdClass();
+$status->is_active = $offer_is_active;
+$response->data_set($status);
 
 $response->set_status("OK");
 die(json_encode($response));

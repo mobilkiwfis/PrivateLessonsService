@@ -215,7 +215,7 @@ if ($check_category ||
 
 
 
-$query .= " ORDER BY promoted_expire_timestamp>:promoted_expire_timestamp DESC";
+$query .= " ORDER BY promoted_expire_timestamp>:promoted_expire_timestamp, views DESC";
 
 $time_stamp = microtime(true);
 $time_stamp_db = date($db_date_format, $time_stamp);
@@ -245,6 +245,7 @@ if ($statement->rowCount() > 0)
         $element->owner_id = $row->owner_id;
         $element->category_key = $row->category_key;
         $element->price = $row->price;
+        $element->views = $row->views;
         $element->promoted_expire_timestamp = $row->promoted_expire_timestamp;
 
         $response->data_add($element);

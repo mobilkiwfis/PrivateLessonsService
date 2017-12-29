@@ -102,6 +102,7 @@ else
         `category_id` int(11) NOT NULL,
         `price` FLOAT NOT NULL,
         `localization` varchar(256) NOT NULL,
+        `views` int(11) NOT NULL DEFAULT 0,
         `at_teachers_house` bool NOT NULL DEFAULT '0',
         `at_students_house` bool NOT NULL DEFAULT '0',
         `get_to_student_for_free` bool NOT NULL DEFAULT '0',
