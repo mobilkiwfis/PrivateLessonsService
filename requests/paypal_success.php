@@ -45,7 +45,6 @@ if (!$good_offer_id)
 }
 
 
-
 // search in database for user
 $query = "SELECT * FROM $db_table_offers WHERE offer_id=:offer_id LIMIT 1";
 $statement = $db->prepare($query);
@@ -57,6 +56,7 @@ $offer_data = null;
 if ($statement->rowCount() > 0) 
 {
     $offer_data = $statement->fetchAll(PDO::FETCH_OBJ);
+    $offer_data = $offer_data[0];
 } 
 else 
 {
@@ -65,7 +65,7 @@ else
     die(json_encode($response));
 }
 
-@$time_expires_db = $offer_data->promoted_expire_timestamp;
+$time_expires_db = $offer_data->promoted_expire_timestamp;
 if ($time_expires_db) {
     $time_expires_db = strtotime($time_expires_db);
 } else {

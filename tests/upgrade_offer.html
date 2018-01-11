@@ -65,6 +65,7 @@
 
             function set_paypal_button(data) {
                 $("#paypal").css("display", "block").click(make_paypal_request);
+                $("#paypal_form").remove();
 
                 var form =
                     '<form id="paypal_form" action="{link}" method="POST" target="_self" style="display: none;">' +
@@ -74,8 +75,9 @@
                     '   <input type="hidden" name="business" value="{business}">' +
                     '   <input type="hidden" name="currency_code" value="{currency_code}">' +
                     '   <input type="hidden" name="cmd" value="_xclick">' +
-                    '   <input type="hidden" name="callback_url" value="{callback_url}">' +
+                    '   <input type="hidden" name="notify_url" value="{callback_url}">' +
                     '   <input type="hidden" name="return" value="{callback_url}">' +
+                    '   <input type="hidden" name="rm" value="2">' +
                     '</form>';
 
                 form = form
@@ -85,7 +87,8 @@
                     .replace("{amount}", data.price)
                     .replace("{quantity}", 1)
                     .replace("{currency_code}", data.currency)
-                    .replace("{callback_url}", data.offer_callback_url);
+                    .replace("{offer_id}", data.offer_id)
+                    .replace(/{callback_url}/g, data.offer_callback_url);
 
                 $(document.body).append(form);
             }
