@@ -12,7 +12,7 @@ error_reporting(-1);
 
 header('Access-Control-Allow-Origin: *');
 
-$use_local_host = true;
+$use_local_host = false;
 
 $localhost_database_host_name = "localhost";
 $localhost_database_host_address = "localhost";
@@ -68,6 +68,9 @@ $two_weeks = $one_week * 2; // $one_week * 2
 
 $offer_upgrade_price = 6.99;
 $offer_upgrade_currency = "PLN";
+$offer_business = "mobilkisklep@gmail.com";
+$offer_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+$offer_callback_url = "http://mobilkiservice.000webhostapp.com/requests/paypal_success.php";
 
 
 

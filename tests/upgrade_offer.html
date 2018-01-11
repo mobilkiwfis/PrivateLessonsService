@@ -15,23 +15,23 @@
             padding: 5px;
             margin: 5px;
         }
-        
+
         .string {
             color: green;
         }
-        
+
         .number {
             color: darkorange;
         }
-        
+
         .boolean {
             color: blue;
         }
-        
+
         .null {
             color: magenta;
         }
-        
+
         .key {
             color: red;
         }
@@ -42,24 +42,58 @@
     <script>
         function syntaxHighlight(json) {
             json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
+            return json.replace(
+                /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+                function (match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
                     }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
+
+            function set_paypal_button(data) {
+                $("#paypal").css("display", "block").click(make_paypal_request);
+
+                var form =
+                    '<form id="paypal_form" action="{link}" method="POST" target="_self" style="display: none;">' +
+                    '   <input type="hidden" name="amount" value="{amount}">' +
+                    '   <input type="hidden" name="item_name" value="{item_name}">' +
+                    '   <input type="hidden" name="quantity" value="quantity">' +
+                    '   <input type="hidden" name="business" value="{business}">' +
+                    '   <input type="hidden" name="currency_code" value="{currency_code}">' +
+                    '   <input type="hidden" name="cmd" value="_xclick">' +
+                    '   <input type="hidden" name="callback_url" value="{callback_url}">' +
+                    '   <input type="hidden" name="return" value="{callback_url}">' +
+                    '</form>';
+
+                form = form
+                    .replace("{link}", data.url)
+                    .replace("{business}", data.business)
+                    .replace("{item_name}", "Upgrade you offer!")
+                    .replace("{amount}", data.price)
+                    .replace("{quantity}", 1)
+                    .replace("{currency_code}", data.currency)
+                    .replace("{callback_url}", data.offer_callback_url);
+
+                $(document.body).append(form);
+            }
+
+            function make_paypal_request() {
+                var form = $("#paypal_form");
+                form.submit().remove();
+            }
 
             function success(response) {
                 $("#error").html("");
@@ -68,6 +102,8 @@
                 $("#output").html(
                     syntaxHighlight(JSON.stringify(response, undefined, 4))
                 );
+
+                set_paypal_button(response.data);
             }
 
             function error(response) {
@@ -116,6 +152,9 @@
 
     <pre id="output"></pre>
     <div id="error"></div>
+
+    <button id="paypal" style="display: none">PayPal</button>
+
 </body>
 
 </html>

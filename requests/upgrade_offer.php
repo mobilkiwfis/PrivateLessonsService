@@ -97,7 +97,9 @@ else
 }
 
 $status = new stdClass();
-$status->link = "https://www.paypal.com/pl/home";
+$status->url = $offer_url;
+$status->offer_callback_url = "$offer_callback_url?offer_id=$offer_id";
+$status->business = $offer_business;
 $status->offer_id = $offer_id;
 $status->duration = $two_weeks;
 $status->price = $offer_upgrade_price;
