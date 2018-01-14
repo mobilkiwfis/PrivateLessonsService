@@ -215,7 +215,7 @@ if ($check_category ||
 
 
 
-$query .= " ORDER BY promoted_expire_timestamp>:promoted_expire_timestamp, views DESC";
+$query .= " ORDER BY promoted_expire_timestamp>:promoted_expire_timestamp DESC, views DESC";
 
 $time_stamp = microtime(true);
 $time_stamp_db = date($db_date_format, $time_stamp);
