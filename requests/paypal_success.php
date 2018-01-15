@@ -86,6 +86,36 @@ $statement->execute();
 
 $response->data_add(new ResponseElement("expires", $time_expires_db));
 $response->set_status("OK");
-die(json_encode($response));
+//die(json_encode($response));
 
 ?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Payment successful</title>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/AnimatedBackground.js"></script>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div id="background_wrap">
+        <canvas id="background_canvas"></canvas>
+    </div>
+    <!-- End of: Background -->
+
+
+	<h1>Payment successful</h1>
+	<p>Your offer will be promoted for two more weeks.</p>
+	<p>Promotion expires: <b><?php echo $time_expires_db ?></b></p>
+
+</body>
+
+</html>
